@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>打地鼠</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        table{
+            background-image: url('images/beijing.jpg');
+        }
+        table td{
+            width: 120px;
+            height: 128px;
+        }
+        table caption{
+            font-family: "微软雅黑";
+            font-size: 30px;
+        }
+        img{
+            margin-top: 31px;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <caption>打地鼠</caption>
+        <tr>
+            <td><img src="images/keng.gif" alt="keng1"></td>
+            <td><img src="images/keng.gif" alt="keng2"></td>
+            <td><img src="images/keng.gif" alt="keng3"></td>
+        </tr>
+        <tr>
+            <td><img src="images/keng.gif" alt="keng4"></td>
+            <td><img src="images/keng.gif" alt="keng5"></td>
+            <td><img src="images/keng.gif" alt="keng6"></td>
+        </tr>
+        <tr>
+            <td><img src="images/keng.gif" alt="keng7"></td>
+            <td><img src="images/keng.gif" alt="keng8"></td>
+            <td><img src="images/keng.gif" alt="keng9"></td>
+        </tr>
+    </table>
+    <p>分数:0</p> 
+
+
+    <script>
+        // 选中所有的img 作为全局变量
+        var mouses = document.getElementsByTagName('img');
+        var num;
+        setTimeout(appear,Math.random()*400+800);
+        var sum=0;
+        // 显示地鼠
+        function appear(){
+            num = Math.floor(Math.random()*9);
+            mouses[num].src = "images/dishu.gif";
+            mouses[num].src.marginTop = "0px";
+            mouses[num].setAttribute('onclick','attack()');
+            setTimeout(disappear,Math.random()*400+800);
+        }
+        // 地鼠消失
+        function disappear(){
+            mouses[num].src = "images/keng.gif";
+            mouses[num].src.marginTop = "31px";
+            setTimeout(appear,Math.random()*400+800);
+        }
+        // 击打地鼠
+        function attack(){
+            mouses[num].src = "images/shang.gif";
+            mouses[num].style.marginTop = '31px';
+            sum += 10;
+            mouses[num].removeAttribute('onclick');
+            document.getElementsByTagName('p')[0].innerHTML = '分数:'+sum;
+        }
+        
+    </script>
+</body>
+</html>

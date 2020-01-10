@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>jquery基础</title>
+		<script src="js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+//			jQuery().ready(function(){
+//				alert('kangbazi');
+//			});
+			
+//			$().ready(function(){
+//				alert('太难了');
+//			});
+			
+			$(function(){
+				document.getElementById('btn').onclick = function(){
+					alert('我真的好南');
+				}
+			});
+		</script>
+		
+		<button id="btn">点击</button>
+	</body>
+</html>
