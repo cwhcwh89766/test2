@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <style>
-        *{margin: 0;padding: 0;}
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <title>图片轮播</title>
+        <script src="js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <style type="text/css">
+		*{margin: 0;padding: 0;}
         ul{
             list-style-type: none;
         }
@@ -36,11 +35,11 @@
             width: 250px;
             height: 340px;
             position: absolute;
-            opacity: 0;
-            transition: opacity 0.5s linear;
+            display: none;
+            /*transition: opacity 0.5s linear;*/
         }
         #box .list li.current{
-            opacity: 1;
+            display: block;
         }
         #box .count{
             position: absolute;
@@ -94,98 +93,80 @@
             margin-right: 5px;
             top: 45%;
         }
-    </style>
-</head>
-<body>
-    <script>
-        window.onload = function(){
-            //获取元素
-            var box = document.getElementsByTagName('div');
-            var uls = box[0].getElementsByTagName('ul');
-            var imgs = uls[0].getElementsByTagName('li');
-            var btn = uls[1].getElementsByTagName('li');
-            var ps = box[0].getElementsByTagName('p');
-
-            var i = index = 0;
-            var play;
-            //展示图片 传num参数表示展示第几张
-            function show(num){
-                //第几个图片被显示 那么其他图片应该隐藏
-                for(i=0;i<imgs.length;i++){
-                    imgs[i].style.opacity = 0;
-                }
-                //btn按钮同上
-                for(i=0;i<btn.length;i++){
-                    btn[i].className = '';
-                }
-                imgs[num].style.opacity = 1;
-                btn[num].className = 'current';
-            }
-            
-            function autoplay(){
-                play = setInterval(function(){
-                    index++;
-                    if(index>=imgs.length){
-                        index = 0;
-                    }
-                    show(index);
-                },2000)
-            }
-
-            autoplay();
-
-            //鼠标移入图片 停止轮播
-            box[0].onmouseover = function(){
-                clearInterval(play);
-            }
-
-
-            //移除开始轮播
-            box[0].onmouseout = function(){
-                autoplay();
-            }
-
-            //给每一个按钮绑定鼠标移入事件
-            for(i=0;i<btn.length;i++){
-                btn[i].index1 = i;
-                btn[i].onmouseover = function(){
-                    show(this.index1);
-                    index = this.index1;
-                    clearInterval(play);
-                }
-            }
-
-            //左按钮
-            ps[0].onclick = function(){
-                    index--;
-                    if(index<0){
-                        index = imgs.length-1;
-                    }
-                    show(index);
-            }
-            //右按钮
-            ps[1].onclick = function(){
-                index++;
-                    if(index>=imgs.length){
-                        index = 0;
-                    }
-                    show(index);
-            }
-        }
-        
-    
-    </script>
-
-    <div id="box">
+		</style>
+		<script type="text/javascript">
+			
+			$(function(){
+                $('.list li:eq(0)').show().siblings().hide();
+                $('.count li:eq(0)').addClass('current')
+					.siblings().removeClass('current');
+				//声明一个全局变量 用来显示第几张图片
+				var m=0;
+				//存储 滚动的状态 方便 停止滚动
+				var s=null;
+				function autoplay(){
+					m++;
+					if(m>=$('.list li').length){
+						m=0;
+					}
+					$('.list li:eq('+m+')').show().siblings().hide();
+					$('.count li:eq('+m+')').addClass('current')
+					.siblings().removeClass('current');
+				}
+				
+				s = setInterval(autoplay,1000);	
+				
+				//两个参数 1.鼠标移入要干嘛2.移出之后要干嘛
+				$('#box').hover(function(){
+					clearInterval(s);//鼠标移入停止播放
+				},function(){
+					s = setInterval(autoplay,1000);
+					//鼠标移除 开始播放
+				});
+				
+				//给每个按钮绑定鼠标移入事件
+				$('.count li').mouseover(function(){
+					//获取每个球的索引值
+					m = $(this).index();
+					$('.list li:eq('+m+')').show().siblings().hide();
+					$('.count li:eq('+m+')').addClass('current')
+					.siblings().removeClass('current');
+				})
+				
+				$('.left').click(function(){
+					m--;
+                    if(m<0){
+						m = $('.list li').length-1;
+					}
+					$('.list li:eq('+m+')').show().siblings().hide();
+					$('.count li:eq('+m+')').addClass('current')
+					.siblings().removeClass('current');
+				});
+				$('.right').click(function(){
+					m++;
+					if(m>=$('.list li').length){
+						m=0;
+					}
+					$('.list li:eq('+m+')').show().siblings().hide();
+					$('.count li:eq('+m+')').addClass('current')
+					.siblings().removeClass('current');
+				});
+				
+			});
+			
+		</script>
+	</head>
+	<body>
+	<div id="box">
         <ul class="list">
-            <li class="current"><img src="images/5.jpg" alt="1" width="250px" height="350px"></li>
-            <li><img src="images/6.jpg" alt="2" width="250px" height="350px"></li>
-            <li><img src="images/7.jpg" alt="3" width="250px" height="350px"></li>
-            <li><img src="images/8.jpg" alt="4" width="250px" height="350px"></li>
-            <li><img src="images/9.jpg" alt="5" width="250px" height="350px"></li>
+            <li><img src="img/0.jpg" alt="1" width="250px" height="350px"></li>
+            <li><img src="img/1.jpg" alt="2" width="250px" height="350px"></li>
+            <li><img src="img/2.jpg" alt="3" width="250px" height="350px"></li>
+            <li><img src="img/3.jpg" alt="4" width="250px" height="350px"></li>
+            <li><img src="img/4.jpg" alt="5" width="250px" height="350px"></li>
         </ul>
         <ul class="count">
-            <li class="current">1</li>
+            <li>1</li>
             <li>2</li>
             <li>3</li>
             <li>4</li>
@@ -195,5 +176,5 @@
         <p class="left">&lt;</p>
         <p class="right">&gt;</p>
     </div>
-</body>
+	</body>
 </html>
